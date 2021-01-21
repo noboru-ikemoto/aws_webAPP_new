@@ -1,0 +1,213 @@
+<!-- /**
+ *================================================================
+ *File Name : dashboardMain.ejs
+ *Author(s) : $Author: Thomastech $
+ *Copyright © THOMAS TECHNOLOGY INC. All rights Reserved.
+ *================================================================
+ */ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NIALM WEB APP DASHBOARD</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="../vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../css/sb-admin.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+    <div>
+        <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+            <a class="navbar-brand mr-1 text-white">NIALM</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-2x fa-fw"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item">
+                            <% if(user) %>
+                                <%= user %>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div id="wrapper">
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>&nbsp;Dashboard
+                </div>
+                <!-- DataTables Example -->
+                <div class="loading" id="table_spin" width="100%" style="display: none">
+                    <i class="fa fa-refresh fa-spin fa-4x"></i>
+                </div>
+                <div class="card mb-3" id="table_content" style="display: hidden">
+                    <div class="card-body pt-1">
+                        <div class="row justify-content-end mr-2">
+                            <div class="badge m-1 mb-2 p-1 px-2" id="processed_time" style="color: white"></div>
+                        </div>
+
+                        <div class="row m-0 justify-content-end">
+                            <button class="mr-3 mb-3" id="search_user_all_button" style="display: none">show all users</button>
+                            <div id="search_service">
+                                <input class="largerCheckbox mx-1" type="checkbox" name="act">&nbsp;Act
+                                <input class="largerCheckbox mx-1" type="checkbox" name="tag">&nbsp;Tag
+                                <input class="largerCheckbox mx-1" type="checkbox" name="forecast">&nbsp;Forecast
+                                <button id="search_service_button" class="mr-3 mb-3">stopped service search</button>
+                            </div>
+                            <input class="mx-1 mb-3" id="search_user">
+                            <button class="mr-3 mb-3" id="search_user_button">user search</button>
+                            <button class="mr-1 mb-3" id="load_first_data" disabled><</button>
+                            <button class="mx-1 mb-3" id="refresh_data" value="1">Refresh</button>
+                            <button class="mx-1 mb-3" id="load_additional_data">></button>
+                            <button class="mx-1 mb-3" id="load_all_data">Full Page</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dashboardTable" width="100%" cellspacing="0">
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer" id="footer">
+                        <span></span>
+                        <div class="float-right" style="display: inline"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scroll to Top Button-->
+    <!-- <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a> -->
+
+    <!-- restart cancel modal -->
+    <div class="modal fade" id="restart_cancel_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title text-left restart-modal-head"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="restart_cancel_modal_body">
+                    <p class="m-1">Recoveryをキャンセルしますか</p>
+                    <button class="btn btn-danger" data-dismiss="modal">いいえ</button>
+                    <button id="restart_cancel_button" class="btn btn-primary" data-dismiss="modal">はい</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- restart cancel modal -->
+    <div class="modal fade" id="restart_cancel_result_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title text-left restart-modal-head"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="restart_cancel_modal_body">
+                    <button id="restart_cancel_button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- restart modal -->
+    <div class="modal fade" id="restart_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title text-left restart-modal-head"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="restart_modal_body">
+                    <b>Restart Time:</b>
+                    <input type="datetime" id="date_input">
+                    <button id="restart_button" class="btn btn-primary" data-dismiss="modal">Restart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- restart confirm modal -->
+    <div class="modal fade" id="restart_confirm_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title text-left" id="restart_confirm_modal_head"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body" id="restart_confirm_modal_body">
+                    <button class="btn btn-danger" data-dismiss="modal">取消</button>
+                    <button id="restart_confirm_button" class="btn btn-primary" data-dismiss="modal">Restart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal-->
+    <div>
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ログアウトしますか</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span></button>
+                    </div>
+                    <!-- <div class="modal-body">select ok or cancel</div> -->
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="/dashboardLogout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script>
+    <script src="../js/moment-timezone-with-data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="../vendor/datatables/jquery.dataTables.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+
+    <!-- date time picker 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/shortcut-buttons-flatpickr@0.1.0/dist/shortcut-buttons-flatpickr.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../js/sb-admin.js"></script>
+    <script src="../js/dashboard/showDashboardMain.js"></script>
+
+</body>
+
+</html>

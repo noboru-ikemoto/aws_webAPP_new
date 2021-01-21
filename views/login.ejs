@@ -1,0 +1,44 @@
+<!-- /**
+ *================================================================
+ *File Name : login.ejs
+ *Author(s) : $Author: Thomastech $
+ *Copyright © THOMAS TECHNOLOGY INC. All rights Reserved.
+ *================================================================
+ */ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>NIALM WEB APP</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+    <link rel="stylesheet" href="../css/styles.min.css">
+</head>
+
+<body>
+    <main class="page login-page">
+        <section class="clean-block clean-form dark">
+            <div class="container col-md-4 col-sm-5 text-center" style="margin-top: 15%">
+                <form action="/" method="post">
+                    <div class="form-group"><label for="email">USER ID</label><input class="form-control" type="text" name="username" id="username" required></div>
+                    <div class="form-group"><label for="password">Password</label><input class="form-control" type="password" name="password" id="password" required></div>
+                    <div><input type="hidden" name="loginmode" value="main"></div>
+                    <div class="form-group">
+                        <!-- <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div> -->
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">Log In</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <script src="../js/script.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!-- /**
+ *================================================================
+ *File Name : sidemenu.ejs
+ *Author(s) : $Author: Thomastech $
+ *Copyright © THOMAS TECHNOLOGY INC. All rights Reserved.
+ *================================================================
+ */ -->
+
+<ul class="sidebar navbar-nav">
+    <li class="nav-item" id="sidemenu_main">
+        <a class="nav-link active" href="#" onclick="goMain()">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>電力情報</span>
+        </a>
+    </li>
+    <li class="nav-item" id="sidemenu_life">
+        <a class="nav-link" href="#" onclick="goLife()">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>生活反応</span>
+        </a>
+    </li>
+    <li class="nav-item" id="sidemenu_tag">
+        <a class="nav-link" href="#" onclick="goTagplus()">
+            <i class="fas fa-fw fa-tv"></i>
+            <span>tagplus</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="javascript:" onclick="showCalculator()">
+            <i class="fas fa-calculator"></i>
+            <span>&nbsp;料金計算</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="javascript:" onclick="showManual()">
+            <i class="fas fa-fw fa-file-alt"></i>
+            <span>画面説明</span>
+        </a>
+    </li>
+</ul>
+
+<script src="../js/sideBarLink.js"></script>
